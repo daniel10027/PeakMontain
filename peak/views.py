@@ -8,11 +8,13 @@ import geoip2.database
 from .get_country import get_country_code
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
+from ipware import get_client_ip
 
 def my_view(request):
-    ip_address = request.META.get('REMOTE_ADDR')
+    ip_address, is_routable = get_client_ip(request)
     country_code = get_country_code(ip_address)
     print(country_code)
+    print(ip_address)
     if country_code == None  and not WhiteListCountry.is_country_allowed(country_code):
         objet = RejectedConnexion.objects.get_or_create(ip=ip_address,country_code=country_code)
         return HttpResponseForbidden()
@@ -20,7 +22,7 @@ def my_view(request):
         return redirect('home')
 
 def Home(request):
-    ip_address = request.META.get('REMOTE_ADDR')
+    ip_address,  is_routable = get_client_ip(request)
     country_code = get_country_code(ip_address)
     print(country_code)
     if country_code == None  and not WhiteListCountry.is_country_allowed(country_code):
