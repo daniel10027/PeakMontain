@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PEAKS APPS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB89HwHUaG2cALnMGiaLmW1CA9A99rF20"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+      function initMap() {
+        var locations = {{locations | safe }};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          center: {lat: 0, lng: 0}
+        });
+
+        for (var i = 0; i < locations.length; i++) {
+          var marker = new google.maps.Marker({
+            position: locations[i],
+            map: map,
+            title: locations[i].name
+          });
+        }
+      }
+    </script>
+    <style>
+      #map {
+        height: 800px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body onload="initMap()">
+    <h3>Position des Sommets (Peaks App V1)</h3>
+   <div class="row" style="float: right;margin-top: -30px;margin-bottom: 20px;">
+
+    <div class="col">
+        <button class="btn sm btn-primary"><a target="_blank" href="{% url 'admin:index' %}" style="color: white;">Administration</a></button> 
+        <button class="btn sm btn-success"><a target="_blank" href="api/" style="color: white;">Acces Api</a> </button>
+        <button class="btn sm btn-secondary"><a target="_blank" href="{% url 'doc' %}" style="color: white;">Documentation</a> </button>
+    </div>
+   </div>
+    <div id="map"></div>
+  </body>
+</html>
